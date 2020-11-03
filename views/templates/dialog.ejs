@@ -1,0 +1,68 @@
+<form id="login-form" class="user-form">
+    <div class="area">
+        <label for="username"><b>Username</b></label>
+        <input type="text" placeholder="Username" name="username" value="" required>
+    </div>
+
+    <div class="area">
+        <label for="pswd"><b>Password</b></label>
+        <input type="password" placeholder="Password" name="pswd" value="" required>
+    </div>
+
+    <span class="close" onclick="this.parentElement.style.display = 'none'">X</span>
+
+    <button onclick="postLogin(event)">Login</button>
+</form>
+
+<script type="text/javascript">
+    if (localStorage.getItem("isLoggedIn")) {
+        document.getElementById("login-button").style.display = "none";
+        document.getElementById("logout-button").style.display = "inline-block";
+        document.getElementById("username").innerText = localStorage.getItem('name');
+    }
+
+    function postLogin(event) {
+        event.preventDefault();
+        let user = document.getElementsByName("username")[0].value;
+        let pass = document.getElementsByName("pswd")[0].value;
+
+        let jsonBody = {
+            "username": user,
+            "password": pass
+        };
+        jsonBody = JSON.stringify(jsonBody);
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "/login", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(jsonBody);
+
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let responseJson = JSON.parse(this.responseText);
+                let isLoggedIn = responseJson.isLoggedIn;
+                if (isLoggedIn) {
+                    localStorage.setItem('isLoggedIn', true);
+                    localStorage.setItem('name', responseJson.name);
+                    document.getElementById("username").innerText = responseJson.name;
+                    document.getElementById("login-form").style.display = "none";
+                    document.getElementById("login-button").style.display = "none";
+                    document.getElementById("logout-button").style.display = "inline-block";
+                }
+            }
+        };
+    }
+
+    function logout() {
+        localStorage.removeItem('isLoggedIn');
+        document.getElementById("login-button").style.display = "inline-block";
+        document.getElementById("logout-button").style.display = "none";
+        document.getElementById("username").innerText = "";
+    }
+
+    function showDialog(page) {
+        const loginForm = document.getElementById(page);
+
+        loginForm.style.display = "block";
+    }
+</script>

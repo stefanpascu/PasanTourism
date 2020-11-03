@@ -1,0 +1,22 @@
+<div class="menu">
+    <div class="left">
+        <div class="dropdown">
+            <button class="dropbtn">Menu</button>
+            <div class="dropdown-content">
+                <a href="/">HomePage</a>
+                <a href="/odds">Odd Birds</a>
+                <a href="/generas">Generas Detailed</a>
+                <a href="/quiz">Quiz</a>
+                <a href="/contact">Contact Us</a>
+                <a href="/bibliography">Bibliography</a>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <p id="username"></p>
+        <button id="login-button" onclick="showDialog('login-form')">Login</button>
+        <button id="logout-button" onclick="logout()" style="display: none;">Logout</button>
+    </div>
+    
+    <%- include('../template/dialog')-%>
+</div>
