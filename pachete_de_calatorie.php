@@ -13,25 +13,33 @@
 
 
 <body>
-    <br>    
+    <h1>Pachete de Calatorie</h1>
+    
     <div class="flex-container"><div>
         <h2>
-        Alege hotelul in care doresti sa iti petreci vacanta!
+        Alege orasul in care doresti sa iti petreci vacanta!
         </h2>
     </div></div>
     <div class="flex-container">
         
         <div>
-            <img src="public/images/platinia.jpg" alt="This image could not load."
+            <img src="public/images/sinaia.jpg" alt="This image could not load."
             style="max-width:100%;height:auto;" />
-            <br><br>
+
             
         </div>
 
         <div>
-            <img src="public/images/art1000.jpg" alt="This image could not load."
+            <img src="public/images/plaja.jpg" alt="This image could not load."
             style="max-width:100%;height:auto;" />
-            <br><br>
+            
+
+        </div>
+
+        <div>
+            <img src="public/images/cluj.jpg" alt="This image could not load."
+            style="max-width:100%;height:auto;" />
+            
 
         </div>
 
@@ -40,18 +48,24 @@
     <div class="flex-container">
         <div>
             <?php
-                echo "<a id='logout-button' class='link-button' href='rezervari1.3.1.php'>HOTEL PLATINIA</a>";
+                echo "<a id='logout-button' class='link-button' href='rezervari1.1.php'>SINAIA</a>";
             ?>
             <br><br>    
         </div>
             
         <div>
             <?php
-                echo "<a id='logout-button' class='link-button' href='rezervari1.3.2.php'>HOTEL ART 1000</a>";
+                echo "<a id='logout-button' class='link-button' href='rezervari1.2.php'>CONSTANTA</a>";
             ?>
             <br><br>  
         </div>
 
+        <div>
+            <?php
+                echo "<a id='logout-button' class='link-button' href='rezervari1.3.php'>CLUJ</a>";
+            ?>
+            <br><br>  
+        </div>
     </div>
 
     <br>

@@ -1,3 +1,7 @@
+<?php
+    if(!isset($_SESSION)){ session_start(); }
+    if(!isset($_SESSION['userid'])) {   header("location: login.php");   }
+?>
 <!DOCTYPE html>
 
 <head>
@@ -18,14 +22,14 @@
     <div class="flex-container">
         
         <div>
-            <img src="public/images/sinaia.jpg" alt="This image could not load."
+            <img src="public/images/haln2.jpg" alt="This image could not load."
             style="max-width:100%;height:auto;" />
             <br><br>
             
         </div>
 
         <div>
-            <img src="public/images/plaja.jpg" alt="This image could not load."
+            <img src="public/images/bulevard2.jpg" alt="This image could not load."
             style="max-width:100%;height:auto;" />
             <br><br>
 

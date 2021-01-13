@@ -120,13 +120,57 @@ function loginUser($conn, $username, $pwd) {
         $_SESSION["ranc"] = $uidExists["ranc"];
         $_SESSION["userid"] = $uidExists["usersId"];
         $_SESSION["useruid"] = $uidExists["usersUid"];
+        $_SESSION["email"] = $uidExists["usersEmail"];
         header("location: profil.inc.php");
         exit();
     }
 }
 
-function deleteUser($conn, $username) {
-    $sql = "DELETE * FROM users WHERE usersEmail=$username OR usersUid=$username;";
+function schimbaUid($conn, $username, $newuid){
+    $sql11 = "SELECT * FROM users WHERE usersUid = '$newuid';";
+    $result = mysqli_query($conn, $sql11);
+    $resultCheck = mysqli_num_rows($result);
+	if($resultCheck > 0){
+        header("location: ../profil.php?error=uidTaken");
+        exit();
+    }
+    else{
+        $sql = "UPDATE users SET usersUid = '$newuid' WHERE usersUid = '$username';";
+        if (mysqli_query($conn, $sql)) {
+            $_SESSION['useruid'] = $newuid;
+            header("location: ../profil.php?error=noneu");
+            exit();
+        } else {
+            echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+        }
+    }    
+}
+
+function schimbaParola($conn, $username, $pwd, $newPwd) {
+
+    $sql = "SELECT * FROM users WHERE usersUid = '$username';";
+    $result = mysqli_query($conn, $sql);
+    $resultCheck = mysqli_num_rows($result);
+		if($resultCheck > 0){
+			while ($row = mysqli_fetch_assoc($result)) {
+				$oldPwd = $row['usersPwd'];
+			}
+        }
+    if(password_verify($pwd, $oldPwd) == true){
+        $newPwdHash = password_hash($newPwd, PASSWORD_DEFAULT);
+        $sql1 = "UPDATE users SET usersPwd = '$newPwdHash' WHERE usersUid = '$username';";
+        if (mysqli_query($conn, $sql1)) {
+            header("location: ../profil.php?error=none&password=changed");
+            exit();
+          } else {
+            echo "Error: " . $sql1 . "<br>" . mysqli_error($conn);
+          }
+    }
+    
+}
+
+function deleteUser($conn, $id) {
+    $sql = "DELETE * FROM users WHERE usersId=$id;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../signup.php?error=stmtfailed");
@@ -134,5 +178,45 @@ function deleteUser($conn, $username) {
     }
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
+    if ($id === $_SESSION["usersId"]) {
+        header("location: logout.inc.php");
+        exit();
+    }
     exit();
+}
+
+function rezervare($conn, $userid, $oras, $hotel, $rest) {
+    // $sql = "INSERT INTO rezervari (usersId, oras, hotel, restaurant) VALUES ($userid, $oras, $hotel, $rest);";
+    // mysqli_query($conn, $sql);
+    // //$resultCheck = mysqli_num_rows($result);
+    // header("location: ../profil.php");
+    // $sql = "INSERT INTO rezervari (usersId, oras, hotel, restaurant) VALUES (?, ?, ?, ?);";
+    // $stmt = mysqli_stmt_init($conn);
+    // if (!mysqli_stmt_prepare($stmt, $sql)) {
+    //     header("location: ../profil.php?error=reservationfailed");
+    //     exit();
+    // }
+
+    // mysqli_stmt_bind_param($stmt, "ssss", $userid, $oras, $hotel, $rest);
+    // mysqli_stmt_execute($stmt);    
+    // mysqli_stmt_close($stmt);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+        
+    $sql = "INSERT INTO rezervari (usersId, oras, hotel, restaurant)
+    VALUES ('$userid', '$oras', '$hotel', '$rest')";
+        
+    if ($conn->query($sql) === TRUE) {
+      //echo "New record created successfully";
+      header("location: ../profil.php?error=noner");
+    } else {
+      //echo "Error: " . $sql . "<br>" . $conn->error;
+      header("location: ../profil.php?error=reservationfailed");
+    }
+        
+    $conn->close();
+        
+    //header("location: ../profil.php");
+    //header("location: ../profil.php");
 }

@@ -9,7 +9,8 @@
 
 
 <body>
-    
+    <img class="image1" src="public/images/lfundal.jpg" alt="This image could not load."
+            style="max-width:100%;height:auto;" />
     <section class="usereg-form">
         <h1>Inregistrare</h1>
         <form action="includes/signup.inc.php" method="post">
